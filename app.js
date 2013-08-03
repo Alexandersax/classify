@@ -14,11 +14,36 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res){
-	res.render("index");
+	//If user is authenticated, send to profile
+	//Otherwise send them to index (login/signup screen)
+	if (authenticated(req)) {
+		res.render("profile", {
+			//Insert a send user data JSON here
+			title: makeTitle("Profile")
+		})
+	} else {
+		res.render("index", {
+			title: makeTitle()
+		})
+	}
 });
 
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+/*----------------------HELPER FUNCTIONS------------------------*/
+
+function makeTitle(str) {
+	if (str==null)
+		return "Classify";
+	else
+		return "Classify | " + str; 
+}
+
+function authenticated(req){
+	return true;
+}
 
